@@ -3,7 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
-    [Header("Speed")]
+    public CameraMove cameraMove;
+
     public float moveSpeed; // 움직임
     public float jumpSpeed; // 점프
     public float gravityScale; // 중력
@@ -21,7 +22,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         targetMovePosition.y -= gravityScale * Time.deltaTime; // 중력 적용
-        characterController.Move(targetMovePosition * Time.deltaTime); // 움직임
+        characterController.Move(Quaternion.Euler(0f, cameraMove.CurrentCameraAngle.y + 180f, 0f) * targetMovePosition * Time.deltaTime); // 움직임
 
         // 바닥에 닿아있으면 중력 제거
         if (characterController.isGrounded)
@@ -31,7 +32,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     // 이동 키(W, A, S, D)를 눌렀을때 실행 
-    public void OnMove(InputAction.CallbackContext context)
+    public void OnPlayerMove(InputAction.CallbackContext context)
     {
         //입력값을 받아와서 이동
         input = context.ReadValue<Vector2>();
@@ -41,7 +42,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     // 점프 키(Space)를 눌렀을때 실행
-    public void OnJump(InputAction.CallbackContext context)
+    public void OnPlayerJump(InputAction.CallbackContext context)
     {
         // 버튼을 눌렀을때 바닥에 닿아있다면 점프
         if (context.performed && characterController.isGrounded)
