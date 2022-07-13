@@ -36,8 +36,8 @@ public class CameraMove : MonoBehaviour
         moveMouseDirection = context.ReadValue<Vector2>();
 
         // 카메라 각도에 마우스를 움직인 방향 추가
-        currentCameraAngle.x += moveMouseDirection.y * cameraRotationSpeedX;
-        currentCameraAngle.y += moveMouseDirection.x * cameraRotationSpeedY;
+        currentCameraAngle.x += moveMouseDirection.y * cameraRotationSpeedX * Time.deltaTime;
+        currentCameraAngle.y += moveMouseDirection.x * cameraRotationSpeedY * Time.deltaTime;
 
         // 카메라 각도 제한
         currentCameraAngle.x = Mathf.Clamp(currentCameraAngle.x, limitMinCameraRotationX, limitMaxCameraRotationX);
