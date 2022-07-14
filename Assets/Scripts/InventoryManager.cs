@@ -22,6 +22,25 @@ public class InventoryManager : MonoBehaviour
 
     private bool isInventoryOpen; // 인벤토리가 열려있는지 확인
 
+    // 싱글톤 패턴
+    private static InventoryManager instance;
+    public static InventoryManager Instance
+    {
+        get { return instance; }
+    }
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(instance);
+
+            return;
+        }
+
+        instance = this;
+    }
+
     private void Start()
     {
         inventorySlots = inventorySlotParent.GetComponentsInChildren<InventorySlot>();
@@ -33,6 +52,19 @@ public class InventoryManager : MonoBehaviour
         if (context.performed)
         {
             ToggleInventory();
+        }
+    }
+
+    // 인벤토리에 아이템 추가
+    public void AddItem(ItemSO item)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (!inventorySlots[i].IsItem())
+            {
+                inventorySlots[i].SetItem(item);
+                break;
+            }
         }
     }
 

@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class CameraMove : MonoBehaviour
 {
+    public Transform player;
+
     public float limitMinCameraRotationX; // 최소 회전 X값
     public float limitMaxCameraRotationX; // 최대 회전 X값
 
@@ -29,6 +31,12 @@ public class CameraMove : MonoBehaviour
         cinemachineTransposer = cinemachineCamera.GetCinemachineComponent<CinemachineTransposer>();
     }
 
+    private void Update()
+    {
+        // 카메라의 위치를 정한 후 카메라를 움직임
+        cinemachineTransposer.m_FollowOffset = Quaternion.Euler(0f, -player.rotation.eulerAngles.y, 0f) * Quaternion.Euler(currentCameraAngle) * Vector3.forward * cameraDistance;
+    }
+
     // 마우스를 움직였을때 실행
     public void OnCameraRotation(InputAction.CallbackContext context)
     {
@@ -43,8 +51,5 @@ public class CameraMove : MonoBehaviour
         currentCameraAngle.x = Mathf.Clamp(currentCameraAngle.x, limitMinCameraRotationX, limitMaxCameraRotationX);
         currentCameraAngle.y = cameraRotationSpeedY < 0 ? 360 - currentCameraAngle.y : currentCameraAngle.y;
         currentCameraAngle.y = cameraRotationSpeedY > 360 ? currentCameraAngle.y - 360 : currentCameraAngle.y;
-
-        // 각도를 이용해서 카메라의 위치를 정한 후 카메라를 움직임
-        cinemachineTransposer.m_FollowOffset = Quaternion.Euler(currentCameraAngle) * Vector3.forward * cameraDistance;
     }
 }

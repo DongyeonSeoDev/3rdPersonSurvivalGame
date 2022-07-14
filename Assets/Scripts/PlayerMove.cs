@@ -7,22 +7,41 @@ public class PlayerMove : MonoBehaviour
 
     public float moveSpeed; // 움직임
     public float jumpSpeed; // 점프
+    public float rotationMaxDegreesDelta; // 회전
     public float gravityScale; // 중력
 
     private CharacterController characterController;
+    private Animator anim;
 
     private Vector2 input; // 입력
     private Vector3 targetMovePosition; // 목표 위치
+    private Vector3 currentMovePosition; // 현재 위치
+    private Quaternion targetRotation; // 목표 회전 값
+
+    private bool isMove; // 움직이고 있는지 확인
+
+    // 애니메이션 Parameters Hash 값
+    private readonly int hashIsMove = Animator.StringToHash("isMove");
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
         targetMovePosition.y -= gravityScale * Time.deltaTime; // 중력 적용
-        characterController.Move(Quaternion.Euler(0f, cameraMove.CurrentCameraAngle.y + 180f, 0f) * targetMovePosition * Time.deltaTime); // 움직임
+        currentMovePosition = Quaternion.Euler(0f, cameraMove.CurrentCameraAngle.y + 180f, 0f) * targetMovePosition * Time.deltaTime; // 카메라 방향 기준에서 목표 방향으로 설정
+
+        characterController.Move(currentMovePosition); // 이동
+
+        // 플레이어가 이동하는 방향으로 회전
+        if (isMove)
+        {
+            targetRotation = Quaternion.Euler(0f, Quaternion.LookRotation(currentMovePosition).eulerAngles.y, 0f);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationMaxDegreesDelta);
+        }
 
         // 바닥에 닿아있으면 중력 제거
         if (characterController.isGrounded)
@@ -39,6 +58,18 @@ public class PlayerMove : MonoBehaviour
 
         targetMovePosition.x = input.x * moveSpeed;
         targetMovePosition.z = input.y * moveSpeed;
+
+        // 움직임 상태 전환
+        if (isMove && input == Vector2.zero)
+        {
+            isMove = false;
+            anim.SetBool(hashIsMove, false);
+        }
+        else if (!isMove && input != Vector2.zero)
+        {
+            isMove = true;
+            anim.SetBool(hashIsMove, true);
+        }
     }
 
     // 점프 키(Space)를 눌렀을때 실행

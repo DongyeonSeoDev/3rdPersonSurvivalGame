@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "PlayerBehavior",
+                    "type": "Button",
+                    "id": "e3bc662a-55d2-49de-b114-d3c7b234bc61",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "CameraRotation",
                     "type": "Value",
                     "id": "0a10eead-8b95-4b86-ad81-92cc9a6dac67",
@@ -128,6 +137,17 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "InventoryToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67a5f8a7-16a6-4bdb-af88-65c52c022a99",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "PlayerBehavior",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
