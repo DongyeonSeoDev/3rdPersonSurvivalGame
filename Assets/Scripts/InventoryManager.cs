@@ -9,8 +9,8 @@ public class InventoryManager : MonoBehaviour
     public RectTransform inventoryPanel; // 인벤토리 패널
     public Transform inventorySlotParent; // 인벤토리 슬롯 부모
     public Transform selectUI; // 선택한 인벤토리를 표시하는 UI
-    public Button useItemButton; // 아이템 사용 버튼
-    public Button deleteItemButton; // 아이템 삭제 버튼
+    public GameObject useItemButton; // 아이템 사용 버튼
+    public GameObject deleteItemButton; // 아이템 삭제 버튼
 
     // 인벤토리 애니메이션
     public Vector3 openInventorySize; // 열릴 때 크기
@@ -177,8 +177,8 @@ public class InventoryManager : MonoBehaviour
         selectUI.transform.position = currentInventorySlot.transform.position;
 
         selectUI.gameObject.SetActive(true);
-        useItemButton.gameObject.SetActive(isUseable);
-        deleteItemButton.gameObject.SetActive(isRemovable);
+        useItemButton.SetActive(isUseable);
+        deleteItemButton.SetActive(isRemovable);
     }
 
     private void RemoveSelectUI()
@@ -187,7 +187,7 @@ public class InventoryManager : MonoBehaviour
         currentUseItemEvent = null;
 
         selectUI.gameObject.SetActive(false);
-        useItemButton.gameObject.SetActive(false);
-        deleteItemButton.gameObject.SetActive(false);
+        useItemButton.SetActive(false);
+        deleteItemButton.SetActive(false);
     }
 }

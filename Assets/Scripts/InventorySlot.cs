@@ -17,7 +17,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     public void SetItem(ItemSO item)
     {
         itemSO = item;
-        itemImage.sprite = itemSO.itemSprite;
+        itemImage.sprite = itemSO == null ? null : itemSO.itemSprite;
         itemImage.gameObject.SetActive(itemSO == null ? false : true);
     }
 

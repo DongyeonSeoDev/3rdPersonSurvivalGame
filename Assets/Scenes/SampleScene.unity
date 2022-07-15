@@ -847,7 +847,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 252606556}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1024437648}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: UseItemButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &252606556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3027,8 +3039,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.07639181, y: -0.6285741, z: -0.062241104, w: 0.77148235}
-  m_LocalPosition: {x: 4.896885, y: 0, z: -1.010207}
+  m_LocalRotation: {x: 0.035353575, y: 0.92887855, z: 0.0919771, w: -0.3570365}
+  m_LocalPosition: {x: 3.348952, y: 0, z: 3.712751}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3217,8 +3229,8 @@ MonoBehaviour:
   inventoryPanel: {fileID: 429853906}
   inventorySlotParent: {fileID: 1042210299}
   selectUI: {fileID: 1981848171}
-  useItemButton: {fileID: 252606555}
-  deleteItemButton: {fileID: 2129798262}
+  useItemButton: {fileID: 252606553}
+  deleteItemButton: {fileID: 2129798260}
   openInventorySize: {x: 1, y: 1, z: 1}
   closeInventorySize: {x: 0, y: 0, z: 0}
   openInventoryPosition: {x: 0, y: 0}
@@ -3847,7 +3859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 4.896885, y: 0, z: -1.010207}
+  m_FollowOffset: {x: 3.348952, y: 0, z: 3.712751}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -5973,8 +5985,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041779747}
-  m_LocalRotation: {x: -0.07639181, y: -0.6285741, z: -0.062241104, w: 0.77148235}
-  m_LocalPosition: {x: 4.896885, y: 0, z: -1.010207}
+  m_LocalRotation: {x: 0.035353575, y: 0.92887855, z: 0.0919771, w: -0.3570365}
+  m_LocalPosition: {x: 3.348952, y: 0, z: 3.712751}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1224070176}
@@ -6360,7 +6372,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2129798263}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1024437648}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: DeleteItemButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2129798263
 MonoBehaviour:
   m_ObjectHideFlags: 0
