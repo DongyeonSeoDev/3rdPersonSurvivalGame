@@ -1,11 +1,16 @@
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class InventoryManager : MonoBehaviour
 {
     public RectTransform inventoryPanel; // 인벤토리 패널
     public Transform inventorySlotParent; // 인벤토리 슬롯 부모
+    public Transform selectUI; // 선택한 인벤토리를 표시하는 UI
+    public Button useItemButton; // 아이템 사용 버튼
+    public Button deleteItemButton; // 아이템 삭제 버튼
 
     // 인벤토리 애니메이션
     public Vector3 openInventorySize; // 열릴 때 크기
@@ -17,6 +22,8 @@ public class InventoryManager : MonoBehaviour
 
     private InventorySlot[] inventorySlots; // 인벤토리 슬롯 배열
 
+    private UnityEvent currentUseItemEvent;
+    private InventorySlot currentInventorySlot; // 현재 선택된 인벤토리 슬롯
     private Tween scaleTween; // 크기 조절 트윈
     private Tween positionTween; // 위치 조절 트윈
 
@@ -68,6 +75,35 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    // 인벤토리 클릭
+    public void ClickInventorySlot(InventorySlot inventorySlot)
+    {
+        if (inventorySlot != currentInventorySlot)
+        {
+            // 선택된 UI 표시
+            currentInventorySlot = inventorySlot;
+
+            ShowSelectUI(inventorySlot.itemSO != null && inventorySlot.itemSO.isUsable, inventorySlot.itemSO != null);
+        }
+        else
+        {
+            // 선택된 UI 표시 제거
+            RemoveSelectUI();
+        }
+    }
+
+    public void UseItemButton()
+    {
+        currentUseItemEvent.Invoke();
+
+        DeleteItemButton();
+    }
+
+    public void DeleteItemButton()
+    {
+        currentInventorySlot.SetItem(null);
+    }
+
     // 인벤토리 토글
     public void ToggleInventory()
     {
@@ -115,6 +151,7 @@ public class InventoryManager : MonoBehaviour
     // 인벤토리가 닫힐 때 애니메이션
     private void InventoryCloseAnimation()
     {
+        RemoveSelectUI();
         GameManager.Instance.ChangeInventoryState(false);
 
         // 시작 값 적용
@@ -127,5 +164,30 @@ public class InventoryManager : MonoBehaviour
         {
             inventoryPanel.gameObject.SetActive(false);
         });
+    }
+
+    private void ShowSelectUI(bool isUseable, bool isRemovable)
+    {
+        if (currentInventorySlot.itemSO.isUsable)
+        {
+            currentUseItemEvent = currentInventorySlot.itemSO.itemUseEvent;
+        }
+
+        selectUI.SetParent(currentInventorySlot.transform);
+        selectUI.transform.position = currentInventorySlot.transform.position;
+
+        selectUI.gameObject.SetActive(true);
+        useItemButton.gameObject.SetActive(isUseable);
+        deleteItemButton.gameObject.SetActive(isRemovable);
+    }
+
+    private void RemoveSelectUI()
+    {
+        currentInventorySlot = null;
+        currentUseItemEvent = null;
+
+        selectUI.gameObject.SetActive(false);
+        useItemButton.gameObject.SetActive(false);
+        deleteItemButton.gameObject.SetActive(false);
     }
 }
