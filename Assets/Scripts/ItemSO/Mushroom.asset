@@ -19,13 +19,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2578919078622941769, guid: 655ba179441dfe948aab9f74a4a97d1b, type: 3}
         m_TargetAssemblyTypeName: UseItem, Assembly-CSharp
-        m_MethodName: UseMushroomItem
-        m_Mode: 1
+        m_MethodName: AddHunger
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0
+          m_FloatArgument: 20
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2

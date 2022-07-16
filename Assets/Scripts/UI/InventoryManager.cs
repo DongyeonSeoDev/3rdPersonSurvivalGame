@@ -92,6 +92,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    // 아이템 사용 버튼을 클릭했을때 실행
     public void UseItemButton()
     {
         currentUseItemEvent.Invoke();
@@ -99,6 +100,7 @@ public class InventoryManager : MonoBehaviour
         DeleteItemButton();
     }
 
+    // 아이템 삭제 버튼을 클릭했을때 실행
     public void DeleteItemButton()
     {
         currentInventorySlot.SetItem(null);
@@ -166,9 +168,10 @@ public class InventoryManager : MonoBehaviour
         });
     }
 
+    // 선택된 아이템 표시 UI를 보여주기
     private void ShowSelectUI(bool isUseable, bool isRemovable)
     {
-        if (currentInventorySlot.itemSO.isUsable)
+        if (currentInventorySlot.itemSO != null && currentInventorySlot.itemSO.isUsable)
         {
             currentUseItemEvent = currentInventorySlot.itemSO.itemUseEvent;
         }
@@ -181,6 +184,7 @@ public class InventoryManager : MonoBehaviour
         deleteItemButton.SetActive(isRemovable);
     }
 
+    // 선택된 아이템 표시 UI를 지우기
     private void RemoveSelectUI()
     {
         currentInventorySlot = null;

@@ -43,3 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0eed83aa63e569498d24760530e600f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addHungerValue: 20
