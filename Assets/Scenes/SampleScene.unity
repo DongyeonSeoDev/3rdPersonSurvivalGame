@@ -484,6 +484,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
 --- !u!1001 &155001110
@@ -3303,8 +3311,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.06697497, y: -0.06692489, z: -0.004502566, w: 0.99549747}
-  m_LocalPosition: {x: 0.6678306, y: 0.3255965, z: -4.944491}
+  m_LocalRotation: {x: -0.002365151, y: 0.99565613, z: 0.08925933, w: 0.026382424}
+  m_LocalPosition: {x: -0.2647398, y: 0.09641755, z: 4.992055}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4198,7 +4206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0.6678306, y: 0.3255965, z: -4.944491}
+  m_FollowOffset: {x: -0.2647398, y: 0.09641755, z: 4.992055}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -4784,6 +4792,14 @@ PrefabInstance:
     - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
       propertyPath: m_Name
       value: Mushroom (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
@@ -5376,6 +5392,14 @@ PrefabInstance:
     - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
       propertyPath: m_Name
       value: Mushroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495935301356609325, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4458fcb2039301e488cd074be5767ebf, type: 3}
@@ -6475,8 +6499,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041779747}
-  m_LocalRotation: {x: -0.06697497, y: -0.06692489, z: -0.004502566, w: 0.99549747}
-  m_LocalPosition: {x: 0.6678306, y: 0.3255965, z: -4.944491}
+  m_LocalRotation: {x: -0.002365151, y: 0.99565613, z: 0.08925933, w: 0.026382424}
+  m_LocalPosition: {x: -0.2647398, y: 0.09641755, z: 4.992055}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1224070176}
@@ -6913,6 +6937,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129798260}
   m_CullTransparentMesh: 1
+--- !u!1 &1311291886876082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7203376514447593842, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
+  m_PrefabInstance: {fileID: 7202135803103241408}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &1311291886876083
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311291886876082}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!4 &4883986140715759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4368407705830737418, guid: a8b101df6c321ab4696357d7cdf7641b, type: 3}
@@ -6982,6 +7033,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2596804561712521571, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
+      propertyPath: moveRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2596804561712521571, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
+      propertyPath: navMeshMaxDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7203376514447593842, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
       propertyPath: m_Name
       value: Chicken

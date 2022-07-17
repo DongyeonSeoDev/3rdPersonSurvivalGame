@@ -104,6 +104,8 @@ public class InventoryManager : MonoBehaviour
     public void DeleteItemButton()
     {
         currentInventorySlot.SetItem(null);
+
+        RemoveSelectUI();
     }
 
     // 인벤토리 토글
