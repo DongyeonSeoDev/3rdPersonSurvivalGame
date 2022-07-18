@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class PlayerUIManager : MonoBehaviour
 {
-    public PlayerStatus playerStatus; // 플레이어 상태
+    public PlayerStats playerStatus; // 플레이어 상태
     public Image fillHpBar; // 체력바 채우는 이미지
     public Image fillHungerBar; // 배고픔바 채우는 이미지
 

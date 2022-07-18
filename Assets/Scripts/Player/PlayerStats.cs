@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerStatus : MonoBehaviour
+public class PlayerStats : MonoBehaviour
 {
     public float maxHp; // 최대 체력
     public float maxHunger; // 최대 배고픔
@@ -20,8 +20,8 @@ public class PlayerStatus : MonoBehaviour
     private float currentHunger; // 현재 배고픔
 
     // 싱글톤 패턴
-    private static PlayerStatus instance;
-    public static PlayerStatus Instance
+    private static PlayerStats instance;
+    public static PlayerStats Instance
     {
         get { return instance; }
     }

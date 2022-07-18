@@ -2418,7 +2418,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 601213977}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c04e1f8a3e0c12b42a11be6f78e8259f, type: 3}
+  m_Script: {fileID: 11500000, guid: 173a530a3718b354e85db341eab68cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 100
@@ -3311,8 +3311,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.002365151, y: 0.99565613, z: 0.08925933, w: 0.026382424}
-  m_LocalPosition: {x: -0.2647398, y: 0.09641755, z: 4.992055}
+  m_LocalRotation: {x: -0.044314794, y: 0.30501676, z: 0.014210074, w: 0.9512093}
+  m_LocalPosition: {x: -2.890902, y: 0.5357966, z: -4.044206}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4206,7 +4206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: -0.2647398, y: 0.09641755, z: 4.992055}
+  m_FollowOffset: {x: -2.890902, y: 0.5357966, z: -4.044206}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -6499,8 +6499,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041779747}
-  m_LocalRotation: {x: -0.002365151, y: 0.99565613, z: 0.08925933, w: 0.026382424}
-  m_LocalPosition: {x: -0.2647398, y: 0.09641755, z: 4.992055}
+  m_LocalRotation: {x: -0.044314794, y: 0.30501676, z: 0.014210074, w: 0.9512093}
+  m_LocalPosition: {x: -2.890902, y: 0.5357966, z: -4.044206}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1224070176}
@@ -6937,33 +6937,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129798260}
   m_CullTransparentMesh: 1
---- !u!1 &1311291886876082 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7203376514447593842, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
-  m_PrefabInstance: {fileID: 7202135803103241408}
-  m_PrefabAsset: {fileID: 0}
---- !u!195 &1311291886876083
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1311291886876082}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!4 &4883986140715759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4368407705830737418, guid: a8b101df6c321ab4696357d7cdf7641b, type: 3}
@@ -7033,14 +7006,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2596804561712521571, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
-      propertyPath: moveRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2596804561712521571, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
-      propertyPath: navMeshMaxDistance
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7203376514447593842, guid: 5a94bcab3d1a8d44d9a4a7c2e80b4b87, type: 3}
       propertyPath: m_Name
       value: Chicken
