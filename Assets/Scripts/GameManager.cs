@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public Transform player; // 플레이어 위치
+
     // 싱글톤 패턴
     private static GameManager instance;
     public static GameManager Instance
@@ -44,5 +46,13 @@ public class GameManager : MonoBehaviour
     private void SetTime(bool isTimeStop)
     {
         Time.timeScale = isTimeStop ? 0f : 1f;
+    }
+
+    // 랜덤 방향을 가져오는 함수
+    public Vector3 RandomDirection()
+    {
+        float randomAngle = Random.Range(0f, 360f);
+
+        return new Vector3(Mathf.Cos(randomAngle * Mathf.Deg2Rad), 0f, Mathf.Sin(randomAngle * Mathf.Deg2Rad));
     }
 }

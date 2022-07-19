@@ -29,6 +29,12 @@ public class PlayerMove : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
     }
 
+    private void Start()
+    {
+        // 플레이어 설정
+        GameManager.Instance.player = transform;
+    }
+
     private void Update()
     {
         targetMovePosition.y -= gravityScale * Time.deltaTime; // 중력 적용

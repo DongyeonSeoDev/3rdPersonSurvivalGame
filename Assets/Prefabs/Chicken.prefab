@@ -748,10 +748,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minMoveDelay: 0.5
   maxMoveDelay: 2
-  moveRange: 7
   navMeshMaxDistance: 1
   navMeshMinMoveVelocity: 0.2
   navMeshArrivalDistance: 0.1
+  moveSpeed: 2
+  runAwaySpeed: 10
+  minMoveDistance: 3
+  maxMoveDistance: 7
+  minRunAwayDistance: 7
+  maxRunAwayDistance: 12
   navMeshMaxFindPathCount: 30
 --- !u!114 &529879797050379641
 MonoBehaviour:

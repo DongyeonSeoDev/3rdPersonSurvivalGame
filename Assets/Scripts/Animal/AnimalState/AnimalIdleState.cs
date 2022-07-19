@@ -24,7 +24,7 @@ public class AnimalIdleState : IAnimalState // Idle State
         {
             animalStateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.RunAway));
         }
-        else if (animalStateData.delayTime < animalStateData.currentTime)
+        else if (animalStateData.delayTime < animalStateData.currentTime) // 대기시간이 지났다면 이동
         {
             animalStateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.Move));
         }

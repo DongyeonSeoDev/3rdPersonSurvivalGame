@@ -5,18 +5,19 @@ public class AnimalMoveState : IAnimalState // 움직임 State
 {
     public void Start(AnimalStateData animalStateData)
     {
-        // 랜덤 위치를 가져와서 갈 수 있는 위치면 이동
-        Vector3 randomPosition;
+        Vector3 targetPosition;
         NavMeshHit navMeshHit;
 
+        // 랜덤 위치를 가져와서 갈 수 있는 위치면 이동
         for (int i = 0; i < animalStateData.navMeshMaxFindPathCount; i++)
         {
-            randomPosition = animalStateData.animalTransform.position + Random.insideUnitSphere * animalStateData.moveRange;
+            targetPosition = animalStateData.animalTransform.position + GameManager.Instance.RandomDirection() * Random.Range(animalStateData.minMoveDistance, animalStateData.maxMoveDistance);
 
-            if (NavMesh.SamplePosition(randomPosition, out navMeshHit, animalStateData.navMeshMaxDistance, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(targetPosition, out navMeshHit, animalStateData.navMeshMaxDistance, NavMesh.AllAreas))
             {
-                animalStateData.navMeshAgent.SetDestination(navMeshHit.position);
+                animalStateData.navMeshAgent.speed = animalStateData.moveSpeed;
                 animalStateData.animalAnimation.SetAnimalAnimation(AnimalAnimationType.Walk);
+                animalStateData.navMeshAgent.SetDestination(navMeshHit.position);
 
                 return;
             }
@@ -28,17 +29,19 @@ public class AnimalMoveState : IAnimalState // 움직임 State
 
     public void Update(AnimalStateData animalStateData)
     {
-        if (animalStateData.isDead) // 죽었다면 죽음 State로
+        if (animalStateData.isDead)
         {
+            // 죽었다면 Dead State로
             animalStateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.Dead));
         }
-        else if (animalStateData.isDamage) // 데미지를 입었다면 도망 State로
+        else if (animalStateData.isDamage)
         {
+            // 데미지를 입었다면 RunAway State로
             animalStateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.RunAway));
         }
         else if (animalStateData.navMeshAgent.velocity.sqrMagnitude > animalStateData.navMeshMinMoveVelocity && animalStateData.navMeshAgent.remainingDistance <= animalStateData.navMeshArrivalDistance)
         {
-            // 이동을 완료했다면 Idle로
+            // 이동을 완료했다면 Idle State로
             animalStateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.Idle));
         }
     }
