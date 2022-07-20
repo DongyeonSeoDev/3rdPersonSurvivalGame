@@ -1,13 +1,14 @@
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
     public RectTransform inventoryPanel; // 인벤토리 패널
     public Transform inventorySlotParent; // 인벤토리 슬롯 부모
+    public Transform mainInventorySlotParent; // 메인 인벤토리 슬롯 부모
     public Transform selectUI; // 선택한 인벤토리를 표시하는 UI
     public GameObject useItemButton; // 아이템 사용 버튼
     public GameObject deleteItemButton; // 아이템 삭제 버튼
@@ -20,7 +21,7 @@ public class InventoryManager : MonoBehaviour
     
     public float inventoryAnimationTime; // 인벤토리 애니메이션 시간
 
-    private InventorySlot[] inventorySlots; // 인벤토리 슬롯 배열
+    private List<InventorySlot> inventorySlots = new List<InventorySlot>(); // 인벤토리 슬롯 배열
 
     private UnityEvent currentUseItemEvent;
     private InventorySlot currentInventorySlot; // 현재 선택된 인벤토리 슬롯
@@ -50,7 +51,15 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-        inventorySlots = inventorySlotParent.GetComponentsInChildren<InventorySlot>();
+        for (int i = 0; i < mainInventorySlotParent.childCount; i++)
+        {
+            inventorySlots.Add(mainInventorySlotParent.GetChild(i).GetComponent<InventorySlot>());
+        }
+
+        for (int i = 0; i < inventorySlotParent.childCount; i++)
+        {
+            inventorySlots.Add(inventorySlotParent.GetChild(i).GetComponent<InventorySlot>());
+        }
     }
 
     // TAB 버튼을 눌렀을때 작동
@@ -65,7 +74,7 @@ public class InventoryManager : MonoBehaviour
     // 인벤토리에 아이템 추가
     public void AddItem(ItemSO item)
     {
-        for (int i = 0; i < inventorySlots.Length; i++)
+        for (int i = 0; i < inventorySlots.Count; i++)
         {
             if (!inventorySlots[i].IsItem())
             {
