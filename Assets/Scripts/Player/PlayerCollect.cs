@@ -41,6 +41,7 @@ public class PlayerCollect : MonoBehaviour
             else
             {
                 InventoryManager.Instance.currentMainInventoryUseItemEvent.Invoke();
+                InventoryManager.Instance.UseMainItem();
             }
         }
     }

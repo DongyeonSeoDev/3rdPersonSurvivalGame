@@ -71,6 +71,8 @@ public class InventoryManager : MonoBehaviour
         {
             mainInventorySlots.Add(mainInventorySlotParent.GetChild(i).GetComponent<InventorySlot>());
         }
+
+        currentMainInventorySlot = mainInventorySlots[0];
     }
 
     // TAB 버튼을 눌렀을때 작동
@@ -100,7 +102,7 @@ public class InventoryManager : MonoBehaviour
             {
                 inventorySlots[i].SetItem(item);
 
-                if (currentMainInventorySlot == inventorySlots[i])
+                if (inventorySlots[i].mainInventorySlot != null && currentMainInventorySlot == inventorySlots[i].mainInventorySlot)
                 {
                     SetMainInventoryEvent();
                 }
@@ -168,6 +170,13 @@ public class InventoryManager : MonoBehaviour
         {
             InventoryCloseAnimation();
         }
+    }
+
+    public void UseMainItem()
+    {
+        isEvent = false;
+        currentMainInventoryUseItemEvent = null;
+        currentMainInventorySlot.SetItem(null);
     }
 
     // 인벤토리가 열릴 때 애니메이션
