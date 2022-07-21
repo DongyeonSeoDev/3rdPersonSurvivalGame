@@ -32,9 +32,16 @@ public class PlayerCollect : MonoBehaviour
     // 마우스 좌클릭으로 실행
     public void OnPlayerBehavior(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !InventoryManager.Instance.isInventoryOpen)
         {
-            EnableCheckCollider();
+            if (!InventoryManager.Instance.isEvent)
+            {
+                EnableCheckCollider();
+            }
+            else
+            {
+                InventoryManager.Instance.currentMainInventoryUseItemEvent.Invoke();
+            }
         }
     }
 

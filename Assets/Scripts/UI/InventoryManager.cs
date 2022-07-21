@@ -7,9 +7,10 @@ using System.Collections.Generic;
 public class InventoryManager : MonoBehaviour
 {
     public RectTransform inventoryPanel; // 인벤토리 패널
-    public Transform inventorySlotParent; // 인벤토리 슬롯 부모
+    public Transform[] inventorySlotParents; // 인벤토리 슬롯 부모
     public Transform mainInventorySlotParent; // 메인 인벤토리 슬롯 부모
     public Transform selectUI; // 선택한 인벤토리를 표시하는 UI
+    public Transform mainSelectUI; // 선택한 메인 인벤토리 슬롯을 표시하는 UI
     public GameObject useItemButton; // 아이템 사용 버튼
     public GameObject deleteItemButton; // 아이템 삭제 버튼
 
@@ -21,14 +22,21 @@ public class InventoryManager : MonoBehaviour
     
     public float inventoryAnimationTime; // 인벤토리 애니메이션 시간
 
-    private List<InventorySlot> inventorySlots = new List<InventorySlot>(); // 인벤토리 슬롯 배열
+    [HideInInspector]
+    public UnityEvent currentMainInventoryUseItemEvent;
+    [HideInInspector]
+    public bool isEvent;
+    [HideInInspector]
+    public bool isInventoryOpen; // 인벤토리가 열려있는지 확인
+
+    private List<InventorySlot> inventorySlots = new List<InventorySlot>(); // 인벤토리 슬롯 리스트
+    private List<InventorySlot> mainInventorySlots = new List<InventorySlot>(); // 메인 인벤토리 슬롯 리스트
 
     private UnityEvent currentUseItemEvent;
     private InventorySlot currentInventorySlot; // 현재 선택된 인벤토리 슬롯
+    private InventorySlot currentMainInventorySlot; // 현재 메인 인벤토리에서 선택된 슬롯
     private Tween scaleTween; // 크기 조절 트윈
     private Tween positionTween; // 위치 조절 트윈
-
-    private bool isInventoryOpen; // 인벤토리가 열려있는지 확인
 
     // 싱글톤 패턴
     private static InventoryManager instance;
@@ -51,14 +59,17 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < mainInventorySlotParent.childCount; i++)
+        for (int i = 0; i < inventorySlotParents.Length; i++)
         {
-            inventorySlots.Add(mainInventorySlotParent.GetChild(i).GetComponent<InventorySlot>());
+            for (int j = 0; j < inventorySlotParents[i].childCount; j++)
+            {
+                inventorySlots.Add(inventorySlotParents[i].GetChild(j).GetComponent<InventorySlot>());
+            }
         }
 
-        for (int i = 0; i < inventorySlotParent.childCount; i++)
+        for (int i = 0; i < mainInventorySlotParent.childCount; i++)
         {
-            inventorySlots.Add(inventorySlotParent.GetChild(i).GetComponent<InventorySlot>());
+            mainInventorySlots.Add(mainInventorySlotParent.GetChild(i).GetComponent<InventorySlot>());
         }
     }
 
@@ -71,6 +82,15 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    // 키보드 1~8 키를 눌렀을때 작동
+    public void OnInventorySlotChange(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SetMainInventorySelectUI(int.Parse(context.control.name));
+        }
+    }
+
     // 인벤토리에 아이템 추가
     public void AddItem(ItemSO item)
     {
@@ -79,6 +99,12 @@ public class InventoryManager : MonoBehaviour
             if (!inventorySlots[i].IsItem())
             {
                 inventorySlots[i].SetItem(item);
+
+                if (currentMainInventorySlot == inventorySlots[i])
+                {
+                    SetMainInventoryEvent();
+                }
+
                 break;
             }
         }
@@ -179,6 +205,29 @@ public class InventoryManager : MonoBehaviour
         });
     }
 
+    private void SetMainInventorySelectUI(int inventorySlotNumber)
+    {
+        currentMainInventorySlot = mainInventorySlots[inventorySlotNumber - 1];
+
+        mainSelectUI.SetParent(currentMainInventorySlot.transform, false);
+
+        SetMainInventoryEvent();
+    }
+
+    private void SetMainInventoryEvent()
+    {
+        if (currentMainInventorySlot.itemSO != null && currentMainInventorySlot.itemSO.isUsable)
+        {
+            currentMainInventoryUseItemEvent = currentMainInventorySlot.itemSO.itemUseEvent;
+            isEvent = true;
+        }
+        else
+        {
+            currentMainInventoryUseItemEvent = null;
+            isEvent = false;
+        }
+    }
+
     // 선택된 아이템 표시 UI를 보여주기
     private void ShowSelectUI(bool isUseable, bool isRemovable)
     {
@@ -187,8 +236,7 @@ public class InventoryManager : MonoBehaviour
             currentUseItemEvent = currentInventorySlot.itemSO.itemUseEvent;
         }
 
-        selectUI.SetParent(currentInventorySlot.transform);
-        selectUI.transform.position = currentInventorySlot.transform.position;
+        selectUI.SetParent(currentInventorySlot.transform, false);
 
         selectUI.gameObject.SetActive(true);
         useItemButton.SetActive(isUseable);
