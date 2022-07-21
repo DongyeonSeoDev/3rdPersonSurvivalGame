@@ -11,8 +11,8 @@ public class PlayerStats : MonoBehaviour
     public float decreaseTime; // 감소 시간
 
     // 옵저버 패턴
-    public event Action<float> changeHpEvent;
-    public event Action<float> changeHungerEvent;
+    public event Action<float> ChangeHpEvent;
+    public event Action<float> ChangeHungerEvent;
 
     private WaitForSeconds waitDecreaseTime; // 감소 시간
 
@@ -53,7 +53,7 @@ public class PlayerStats : MonoBehaviour
     {
         currentHp = Mathf.Clamp(currentHp + addValue, 0, maxHp);
 
-        changeHpEvent(currentHp / maxHp);
+        ChangeHpEvent(currentHp / maxHp);
     }
 
     // 배고픔 감소
@@ -61,7 +61,7 @@ public class PlayerStats : MonoBehaviour
     {
         currentHunger = Mathf.Clamp(currentHunger + addValue, 0, maxHunger);
 
-        changeHungerEvent(currentHunger / maxHunger);
+        ChangeHungerEvent(currentHunger / maxHunger);
     }
 
     // 시간이 지나면 배고픔 또는 체력 감소

@@ -1,8 +1,8 @@
-using UnityEngine;
 using DG.Tweening;
-using UnityEngine.InputSystem;
-using UnityEngine.Events;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -22,17 +22,15 @@ public class InventoryManager : MonoBehaviour
     
     public float inventoryAnimationTime; // 인벤토리 애니메이션 시간
 
-    [HideInInspector]
-    public UnityEvent currentMainInventoryUseItemEvent;
-    [HideInInspector]
-    public bool isEvent;
-    [HideInInspector]
-    public bool isInventoryOpen; // 인벤토리가 열려있는지 확인
+    [HideInInspector] public InventorySlot moveStartInventorySlot;
+    [HideInInspector] public InventorySlot moveEndInventorySlot;
+    [HideInInspector] public bool isInventoryOpen; // 인벤토리가 열려있는지 확인
 
-    private List<InventorySlot> inventorySlots = new List<InventorySlot>(); // 인벤토리 슬롯 리스트
-    private List<InventorySlot> mainInventorySlots = new List<InventorySlot>(); // 메인 인벤토리 슬롯 리스트
+    private readonly List<InventorySlot> inventorySlots = new List<InventorySlot>(); // 인벤토리 슬롯 리스트
+    private readonly List<InventorySlot> mainInventorySlots = new List<InventorySlot>(); // 메인 인벤토리 슬롯 리스트
 
     private UnityEvent currentUseItemEvent;
+    private UnityEvent currentMainInventoryUseItemEvent;
     private InventorySlot currentInventorySlot; // 현재 선택된 인벤토리 슬롯
     private InventorySlot currentMainInventorySlot; // 현재 메인 인벤토리에서 선택된 슬롯
     private Tween scaleTween; // 크기 조절 트윈
@@ -102,10 +100,7 @@ public class InventoryManager : MonoBehaviour
             {
                 inventorySlots[i].SetItem(item);
 
-                if (inventorySlots[i].mainInventorySlot != null && currentMainInventorySlot == inventorySlots[i].mainInventorySlot)
-                {
-                    SetMainInventoryEvent();
-                }
+                CurrentMainInventorySlotCheck(inventorySlots[i]);
 
                 break;
             }
@@ -172,11 +167,42 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void UseMainItem()
+    public bool UseMainItem()
     {
-        isEvent = false;
-        currentMainInventoryUseItemEvent = null;
-        currentMainInventorySlot.SetItem(null);
+        if (currentMainInventoryUseItemEvent != null)
+        {
+            currentMainInventoryUseItemEvent.Invoke();
+
+            currentMainInventoryUseItemEvent = null;
+            currentMainInventorySlot.SetItem(null);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void MoveItem()
+    {
+        if (moveStartInventorySlot != null && moveEndInventorySlot != null && moveStartInventorySlot != moveEndInventorySlot && moveStartInventorySlot.itemSO != null)
+        {
+            ItemSO temp = moveStartInventorySlot.itemSO;
+
+            moveStartInventorySlot.SetItem(moveEndInventorySlot.itemSO);
+            moveEndInventorySlot.SetItem(temp);
+
+            ClickInventorySlot(moveEndInventorySlot);
+            CurrentMainInventorySlotCheck(moveStartInventorySlot);
+            CurrentMainInventorySlotCheck(moveEndInventorySlot);
+        }
+
+        MoveEnd();
+    }
+
+    private void MoveEnd()
+    {
+        moveStartInventorySlot = null;
+        moveEndInventorySlot = null;
     }
 
     // 인벤토리가 열릴 때 애니메이션
@@ -200,6 +226,7 @@ public class InventoryManager : MonoBehaviour
     private void InventoryCloseAnimation()
     {
         RemoveSelectUI();
+        MoveEnd();
         GameManager.Instance.ChangeInventoryState(false);
 
         // 시작 값 적용
@@ -223,17 +250,23 @@ public class InventoryManager : MonoBehaviour
         SetMainInventoryEvent();
     }
 
+    private void CurrentMainInventorySlotCheck(InventorySlot inventorySlot)
+    {
+        if (inventorySlot.mainInventorySlot != null && currentMainInventorySlot == inventorySlot.mainInventorySlot)
+        {
+            SetMainInventoryEvent();
+        }
+    }
+
     private void SetMainInventoryEvent()
     {
         if (currentMainInventorySlot.itemSO != null && currentMainInventorySlot.itemSO.isUsable)
         {
             currentMainInventoryUseItemEvent = currentMainInventorySlot.itemSO.itemUseEvent;
-            isEvent = true;
         }
         else
         {
             currentMainInventoryUseItemEvent = null;
-            isEvent = false;
         }
     }
 
@@ -255,9 +288,9 @@ public class InventoryManager : MonoBehaviour
     // 선택된 아이템 표시 UI를 지우기
     private void RemoveSelectUI()
     {
-        currentInventorySlot = null;
         currentUseItemEvent = null;
-
+        currentInventorySlot = null;
+        
         selectUI.gameObject.SetActive(false);
         useItemButton.SetActive(false);
         deleteItemButton.SetActive(false);

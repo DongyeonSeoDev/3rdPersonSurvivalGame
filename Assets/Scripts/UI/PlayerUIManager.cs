@@ -29,8 +29,8 @@ public class PlayerUIManager : MonoBehaviour
     private void Start()
     {
         // 이벤트 등록
-        playerStatus.changeHpEvent += SetHpBar;
-        playerStatus.changeHungerEvent += SetHungerBar;
+        playerStatus.ChangeHpEvent += SetHpBar;
+        playerStatus.ChangeHungerEvent += SetHungerBar;
     }
 
     // 체력바 채우기

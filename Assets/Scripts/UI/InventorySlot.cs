@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Image itemImage; // 아이템 이미지
     public ItemSO itemSO; // 아이템 데이터
@@ -35,6 +35,29 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     {
         itemSO = item;
         itemImage.sprite = itemSO == null ? null : itemSO.itemSprite;
-        itemImage.gameObject.SetActive(itemSO == null ? false : true);
+        itemImage.gameObject.SetActive(itemSO != null);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        InventoryManager.Instance.moveStartInventorySlot = this;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        InventoryManager.Instance.MoveItem();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        InventoryManager.Instance.moveEndInventorySlot = this;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (InventoryManager.Instance.moveEndInventorySlot == this)
+        {
+            InventoryManager.Instance.moveEndInventorySlot = null;
+        }
     }
 }

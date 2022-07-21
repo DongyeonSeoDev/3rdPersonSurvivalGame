@@ -34,14 +34,9 @@ public class PlayerCollect : MonoBehaviour
     {
         if (context.performed && !InventoryManager.Instance.isInventoryOpen)
         {
-            if (!InventoryManager.Instance.isEvent)
+            if (!InventoryManager.Instance.UseMainItem())
             {
                 EnableCheckCollider();
-            }
-            else
-            {
-                InventoryManager.Instance.currentMainInventoryUseItemEvent.Invoke();
-                InventoryManager.Instance.UseMainItem();
             }
         }
     }
