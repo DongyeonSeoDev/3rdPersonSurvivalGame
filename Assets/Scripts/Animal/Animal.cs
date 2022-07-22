@@ -15,8 +15,11 @@ public class Animal : MonoBehaviour
     public float minRunAwayDistance; // 최소 도망거리
     public float maxRunAwayDistance; // 최대 도망거리
     public int navMeshMaxFindPathCount; // NavMesh 길찾기 최대 횟수
+    public int maxHp; // 최대 체력
 
-    private AnimalStateData stateData = new AnimalStateData(); // State 데이터
+    private readonly AnimalStateData stateData = new AnimalStateData(); // State 데이터
+
+    private int currentHp; // 현재 체력
 
     private void Start()
     {
@@ -40,10 +43,27 @@ public class Animal : MonoBehaviour
         stateData.navMeshMaxFindPathCount = navMeshMaxFindPathCount;
 
         stateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.Idle)); // 처음에는 Idle로 설정
+
+        currentHp = maxHp;
     }
 
     private void Update()
     {
         stateData.Process(); // State 패턴 실행
+    }
+
+    public void GetDamage(int damage)
+    {
+        if (!stateData.isDead)
+        {
+            stateData.isDamage = true;
+
+            currentHp -= damage;
+
+            if (currentHp <= 0)
+            {
+                stateData.isDead = true;
+            }
+        }
     }
 }

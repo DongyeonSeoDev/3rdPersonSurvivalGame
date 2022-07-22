@@ -8,7 +8,7 @@ public class PlayerCollect : MonoBehaviour
     private BoxCollider checkCollectableCollider; // 아이템 채집 콜라이더
 
     private float currentCheckCollectableTime; // 현재 채집 활성화 시간
-    private bool isGetItem; // 아이템 획득 확인
+    private bool isActive; // 아이템 획득 확인
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class PlayerCollect : MonoBehaviour
 
             if (currentCheckCollectableTime <= 0)
             {
-                DisableCheckCollider();
+                SetCheckCollider(false);
             }
         }
     }
@@ -36,29 +36,22 @@ public class PlayerCollect : MonoBehaviour
         {
             if (!InventoryManager.Instance.UseMainItem())
             {
-                EnableCheckCollider();
+                SetCheckCollider(true);
             }
         }
     }
 
-    // 아이템 채집 활성화
-    private void EnableCheckCollider()
+    // 아이템 채집 설정
+    private void SetCheckCollider(bool isEnable)
     {
-        checkCollectableCollider.enabled = true;
-        isGetItem = false;
-        currentCheckCollectableTime = checkCollectableTime;
-    }
-
-    // 아이템 채집 비활성화
-    private void DisableCheckCollider()
-    {
-        checkCollectableCollider.enabled = false;
-        currentCheckCollectableTime = 0;
+        checkCollectableCollider.enabled = isEnable;
+        isActive = !isEnable;
+        currentCheckCollectableTime = isEnable ? checkCollectableTime : 0;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isGetItem) // 아이템을 이미 얻었다면 종료
+        if (isActive) // 아이템을 이미 얻었다면 종료
         {
             return;
         }
@@ -71,10 +64,27 @@ public class PlayerCollect : MonoBehaviour
             // 아이템 획득
             ItemSO item = collectableObject.GetItem();
 
-            InventoryManager.Instance.AddItem(item);
-            isGetItem = true;
+            if (item != null)
+            {
+                InventoryManager.Instance.AddItem(item);
 
-            DisableCheckCollider();
+                SetCheckCollider(false);
+            }
+        }
+
+        // 공격이 가능한 아이템을 들고있다면
+        ItemSO currentItem = InventoryManager.Instance.CurrentItem();
+
+        if (currentItem != null && currentItem.attackPower > 0)
+        {
+            Animal animal = other.GetComponent<Animal>();
+
+            if (animal != null)
+            {
+                animal.GetDamage(currentItem.attackPower);
+
+                SetCheckCollider(false);
+            }
         }
     }
 }

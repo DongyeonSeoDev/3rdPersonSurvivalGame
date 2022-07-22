@@ -5,6 +5,8 @@ public class AnimalRunAwayState : IAnimalState
 {
     public void Start(AnimalStateData animalStateData)
     {
+        animalStateData.isDamage = false;
+
         Vector3 targetPosition;
         Vector3 direction;
         NavMeshHit navMeshHit;

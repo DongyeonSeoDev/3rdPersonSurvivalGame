@@ -199,6 +199,11 @@ public class InventoryManager : MonoBehaviour
         MoveEnd();
     }
 
+    public ItemSO CurrentItem()
+    {
+        return currentMainInventorySlot.itemSO;
+    }
+
     private void MoveEnd()
     {
         moveStartInventorySlot = null;
