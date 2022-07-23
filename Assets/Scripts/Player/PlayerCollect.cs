@@ -32,7 +32,7 @@ public class PlayerCollect : MonoBehaviour
     // 마우스 좌클릭으로 실행
     public void OnPlayerBehavior(InputAction.CallbackContext context)
     {
-        if (context.performed && !InventoryManager.Instance.isInventoryOpen)
+        if (context.performed && !ItemUI.isInventoryOpen)
         {
             if (!InventoryManager.Instance.UseMainItem())
             {

@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
 {
-    public RectTransform inventoryPanel; // 인벤토리 패널
     public Transform[] inventorySlotParents; // 인벤토리 슬롯 부모
     public Transform mainInventorySlotParent; // 메인 인벤토리 슬롯 부모
     public Transform selectUI; // 선택한 인벤토리를 표시하는 UI
@@ -14,18 +12,10 @@ public class InventoryManager : MonoBehaviour
     public GameObject useItemButton; // 아이템 사용 버튼
     public GameObject deleteItemButton; // 아이템 삭제 버튼
 
-    // 인벤토리 애니메이션
-    public Vector3 openInventorySize; // 열릴 때 크기
-    public Vector3 closeInventorySize; // 닫힐 때 크기
-    public Vector2 openInventoryPosition; // 열릴 때 위치
-    public Vector2 closeInventoryPosition; // 닫힐 때 위치
-    
-    public float inventoryAnimationTime; // 인벤토리 애니메이션 시간
-
     [HideInInspector] public InventorySlot moveStartInventorySlot;
     [HideInInspector] public InventorySlot moveEndInventorySlot;
-    [HideInInspector] public bool isInventoryOpen; // 인벤토리가 열려있는지 확인
 
+    private readonly Dictionary<ItemSO, int> itemCountDictionary = new Dictionary<ItemSO, int>();
     private readonly List<InventorySlot> inventorySlots = new List<InventorySlot>(); // 인벤토리 슬롯 리스트
     private readonly List<InventorySlot> mainInventorySlots = new List<InventorySlot>(); // 메인 인벤토리 슬롯 리스트
 
@@ -33,8 +23,6 @@ public class InventoryManager : MonoBehaviour
     private UnityEvent currentMainInventoryUseItemEvent;
     private InventorySlot currentInventorySlot; // 현재 선택된 인벤토리 슬롯
     private InventorySlot currentMainInventorySlot; // 현재 메인 인벤토리에서 선택된 슬롯
-    private Tween scaleTween; // 크기 조절 트윈
-    private Tween positionTween; // 위치 조절 트윈
 
     // 싱글톤 패턴
     private static InventoryManager instance;
@@ -73,15 +61,6 @@ public class InventoryManager : MonoBehaviour
         currentMainInventorySlot = mainInventorySlots[0];
     }
 
-    // TAB 버튼을 눌렀을때 작동
-    public void OnInventoryToggle(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            ToggleInventory();
-        }
-    }
-
     // 키보드 1~8 키를 눌렀을때 작동
     public void OnInventorySlotChange(InputAction.CallbackContext context)
     {
@@ -101,8 +80,28 @@ public class InventoryManager : MonoBehaviour
                 inventorySlots[i].SetItem(item);
 
                 CurrentMainInventorySlotCheck(inventorySlots[i]);
+                AddItemDictionary(item, 1);
 
                 break;
+            }
+        }
+    }
+
+    public void UseItem(ItemSO item, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            for (int j = 0; j < inventorySlots.Count; j++)
+            {
+                if (inventorySlots[j].itemSO == item)
+                {
+                    inventorySlots[j].SetItem(null);
+
+                    CurrentMainInventorySlotCheck(inventorySlots[j]);
+                    AddItemDictionary(item, -1);
+
+                    break;
+                }
             }
         }
     }
@@ -135,36 +134,10 @@ public class InventoryManager : MonoBehaviour
     // 아이템 삭제 버튼을 클릭했을때 실행
     public void DeleteItemButton()
     {
+        AddItemDictionary(currentInventorySlot.itemSO, -1);
         currentInventorySlot.SetItem(null);
 
         RemoveSelectUI();
-    }
-
-    // 인벤토리 토글
-    public void ToggleInventory()
-    {
-        isInventoryOpen = !isInventoryOpen;
-
-        // 현재 작동되고 있는 애니메이션이 있다면 종료
-        if (scaleTween.IsActive())
-        {
-            scaleTween.Complete();
-        }
-
-        if (positionTween.IsActive())
-        {
-            positionTween.Complete();
-        }
-
-        // 애니메이션 실행
-        if (isInventoryOpen)
-        {
-            InventoryOpenAnimation();
-        }
-        else
-        {
-            InventoryCloseAnimation();
-        }
     }
 
     public bool UseMainItem()
@@ -174,6 +147,7 @@ public class InventoryManager : MonoBehaviour
             currentMainInventoryUseItemEvent.Invoke();
 
             currentMainInventoryUseItemEvent = null;
+            AddItemDictionary(currentMainInventorySlot.itemSO, -1);
             currentMainInventorySlot.SetItem(null);
 
             return true;
@@ -204,46 +178,38 @@ public class InventoryManager : MonoBehaviour
         return currentMainInventorySlot.itemSO;
     }
 
+    public void CloseInventory()
+    {
+        RemoveSelectUI();
+        MoveEnd();
+    }
+
+    public void AddItemDictionary(ItemSO item, int addCount)
+    {
+        if (!itemCountDictionary.ContainsKey(item))
+        {
+            itemCountDictionary.Add(item, addCount);
+
+            return;
+        }
+
+        itemCountDictionary[item] += addCount;
+    }
+
+    public int GetItemDictionary(ItemSO item)
+    {
+        if (!itemCountDictionary.ContainsKey(item))
+        {
+            return 0;
+        }
+
+        return itemCountDictionary[item];
+    }
+
     private void MoveEnd()
     {
         moveStartInventorySlot = null;
         moveEndInventorySlot = null;
-    }
-
-    // 인벤토리가 열릴 때 애니메이션
-    private void InventoryOpenAnimation()
-    {
-        inventoryPanel.gameObject.SetActive(true);
-
-        // 시작 값 적용
-        inventoryPanel.localScale = closeInventorySize;
-        inventoryPanel.anchoredPosition = closeInventoryPosition;
-
-        // 애니메이션 작동
-        scaleTween = inventoryPanel.DOScale(openInventorySize, inventoryAnimationTime);
-        positionTween = inventoryPanel.DOAnchorPos(openInventorySize, inventoryAnimationTime).OnComplete(() =>
-        {
-            GameManager.Instance.ChangeInventoryState(true);
-        });
-    }
-
-    // 인벤토리가 닫힐 때 애니메이션
-    private void InventoryCloseAnimation()
-    {
-        RemoveSelectUI();
-        MoveEnd();
-        GameManager.Instance.ChangeInventoryState(false);
-
-        // 시작 값 적용
-        inventoryPanel.localScale = openInventorySize;
-        inventoryPanel.anchoredPosition = openInventoryPosition;
-
-        // 애니메이션 작동
-        scaleTween = inventoryPanel.DOScale(closeInventorySize, inventoryAnimationTime);
-        positionTween = inventoryPanel.DOAnchorPos(closeInventoryPosition, inventoryAnimationTime).OnComplete(() =>
-        {
-            inventoryPanel.gameObject.SetActive(false);
-        });
     }
 
     private void SetMainInventorySelectUI(int inventorySlotNumber)

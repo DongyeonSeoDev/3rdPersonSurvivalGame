@@ -28,8 +28,8 @@ public class GameManager : MonoBehaviour
         SetCursorStates(true);
     }
 
-    // 인벤토리가 열리거나 닫힐 때 작동
-    public void ChangeInventoryState(bool isOpen)
+    // 아이템 UI가 열리거나 닫힐 때 작동
+    public void ChangeItemUIState(bool isOpen)
     {
         SetCursorStates(!isOpen);
         SetTime(isOpen);

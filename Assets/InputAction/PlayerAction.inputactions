@@ -42,7 +42,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "InventoryToggle",
+                    "name": "ToggleItemUI",
                     "type": "Button",
                     "id": "79dcb87a-c66c-4cd4-a861-8c270d4d592a",
                     "expectedControlType": "Button",
@@ -57,7 +57,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -244,7 +244,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "InventoryToggle",
+                    "action": "ToggleItemUI",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
