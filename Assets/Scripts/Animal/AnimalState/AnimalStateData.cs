@@ -25,6 +25,7 @@ public class AnimalStateData
     public int navMeshMaxFindPathCount; // NavMesh 길찾기 최대 횟수
     public bool isDamage; // 데미지를 받았는지 확인
     public bool isDead; // 죽었는지 확인
+    public ItemSO lootItem; // 적 전리품
 
     private bool isStart; // 시작 함수를 실행했는지 확인
 

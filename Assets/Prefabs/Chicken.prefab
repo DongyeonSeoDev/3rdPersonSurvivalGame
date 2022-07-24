@@ -760,6 +760,7 @@ MonoBehaviour:
   maxRunAwayDistance: 12
   navMeshMaxFindPathCount: 30
   maxHp: 30
+  lootItem: {fileID: 11400000, guid: e77c5ed7172fa90499cbf1fbe01f6535, type: 2}
 --- !u!114 &529879797050379641
 MonoBehaviour:
   m_ObjectHideFlags: 0

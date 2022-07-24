@@ -16,6 +16,7 @@ public class Animal : MonoBehaviour
     public float maxRunAwayDistance; // 최대 도망거리
     public int navMeshMaxFindPathCount; // NavMesh 길찾기 최대 횟수
     public int maxHp; // 최대 체력
+    public ItemSO lootItem; // 적 전리품
 
     private readonly AnimalStateData stateData = new AnimalStateData(); // State 데이터
 
@@ -41,6 +42,7 @@ public class Animal : MonoBehaviour
         stateData.minRunAwayDistance = minRunAwayDistance;
         stateData.maxRunAwayDistance = maxRunAwayDistance;
         stateData.navMeshMaxFindPathCount = navMeshMaxFindPathCount;
+        stateData.lootItem = lootItem;
 
         stateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.Idle)); // 처음에는 Idle로 설정
 
