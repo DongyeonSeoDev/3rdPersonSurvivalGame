@@ -23,7 +23,7 @@ public class AnimalState
     }
 
     // 동물 State Dictionary
-    private Dictionary<AnimalStateType, IAnimalState> animalStateDictionary = new Dictionary<AnimalStateType, IAnimalState>();
+    private readonly Dictionary<AnimalStateType, IAnimalState> animalStateDictionary = new Dictionary<AnimalStateType, IAnimalState>();
 
     // Dictionary에 데이터 추가
     private AnimalState()

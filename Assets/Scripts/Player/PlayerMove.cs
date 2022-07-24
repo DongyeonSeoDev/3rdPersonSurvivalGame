@@ -32,7 +32,7 @@ public class PlayerMove : MonoBehaviour
     private void Start()
     {
         // 플레이어 설정
-        GameManager.Instance.player = transform;
+        GameManager.player = transform;
     }
 
     private void Update()
@@ -86,5 +86,30 @@ public class PlayerMove : MonoBehaviour
         {
             targetMovePosition.y = jumpSpeed;
         }
+    }
+
+    private void BuildObjectCheck(BuildObject buildObject, bool isEnter)
+    {
+        if (buildObject != null)
+        {
+            if (!BuildManager.Instance.isUsableBuilding.ContainsKey(buildObject.buildItem))
+            {
+                BuildManager.Instance.isUsableBuilding.Add(buildObject.buildItem, isEnter);
+
+                return;
+            }
+
+            BuildManager.Instance.isUsableBuilding[buildObject.buildItem] = isEnter;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        BuildObjectCheck(other.GetComponent<BuildObject>(), true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        BuildObjectCheck(other.GetComponent<BuildObject>(), false);
     }
 }

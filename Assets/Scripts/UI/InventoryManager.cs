@@ -137,6 +137,7 @@ public class InventoryManager : MonoBehaviour
         AddItemDictionary(currentInventorySlot.itemSO, -1);
         currentInventorySlot.SetItem(null);
 
+        CurrentMainInventorySlotCheck(currentInventorySlot);
         RemoveSelectUI();
     }
 
@@ -147,6 +148,14 @@ public class InventoryManager : MonoBehaviour
             currentMainInventoryUseItemEvent.Invoke();
 
             currentMainInventoryUseItemEvent = null;
+            AddItemDictionary(currentMainInventorySlot.itemSO, -1);
+            currentMainInventorySlot.SetItem(null);
+
+            return true;
+        }
+        else if (currentMainInventorySlot.itemSO != null && currentMainInventorySlot.itemSO.isBuildable)
+        {
+            BuildManager.Instance.Build();
             AddItemDictionary(currentMainInventorySlot.itemSO, -1);
             currentMainInventorySlot.SetItem(null);
 
@@ -231,14 +240,26 @@ public class InventoryManager : MonoBehaviour
 
     private void SetMainInventoryEvent()
     {
-        if (currentMainInventorySlot.itemSO != null && currentMainInventorySlot.itemSO.isUsable)
+        if (currentMainInventorySlot.itemSO != null)
         {
-            currentMainInventoryUseItemEvent = currentMainInventorySlot.itemSO.itemUseEvent;
+            if (currentMainInventorySlot.itemSO.isUsable)
+            {
+                BuildManager.Instance.SetBuildObject(null);
+                currentMainInventoryUseItemEvent = currentMainInventorySlot.itemSO.itemUseEvent;
+
+                return;
+            }
+            else if (currentMainInventorySlot.itemSO.isBuildable)
+            {
+                BuildManager.Instance.SetBuildObject(currentMainInventorySlot.itemSO);
+                currentMainInventoryUseItemEvent = null;
+
+                return;
+            }
         }
-        else
-        {
-            currentMainInventoryUseItemEvent = null;
-        }
+
+        BuildManager.Instance.SetBuildObject(null);
+        currentMainInventoryUseItemEvent = null;
     }
 
     // 선택된 아이템 표시 UI를 보여주기

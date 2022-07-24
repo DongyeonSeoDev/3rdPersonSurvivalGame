@@ -9,16 +9,15 @@ public class AnimalRunAwayState : IAnimalState
 
         Vector3 targetPosition;
         Vector3 direction;
-        NavMeshHit navMeshHit;
 
         // 플레이어 반대 방향 가져오기
-        direction = (animalStateData.animalTransform.position - GameManager.Instance.player.position).normalized;
+        direction = (animalStateData.animalTransform.position - GameManager.player.position).normalized;
         direction.y = 0f;
 
         // 플레이어 반대 방향에 길이 있는지 확인
         targetPosition = animalStateData.animalTransform.position + direction * Random.Range(animalStateData.minRunAwayDistance, animalStateData.maxRunAwayDistance);
 
-        if (NavMesh.SamplePosition(targetPosition, out navMeshHit, animalStateData.navMeshMaxDistance, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(targetPosition, out NavMeshHit navMeshHit, animalStateData.navMeshMaxDistance, NavMesh.AllAreas))
         {
             // 길이 있다면 이동
             SetRunAway(animalStateData, navMeshHit.position);

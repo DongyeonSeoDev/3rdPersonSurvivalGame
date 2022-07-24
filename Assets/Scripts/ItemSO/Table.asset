@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a7b9965b3ae2be42bf895be1ea28b26, type: 3}
+  m_Name: Table
+  m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: c3725690e617dec43b524c687bf7694c, type: 3}
+  attackPower: 0
+  isUsable: 0
+  isBuildable: 1
+  itemUseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  buildObject: {fileID: 4010882457499986815, guid: b6fd8c3cbc5a87945a5eb96299f79f02, type: 3}
+  buildPosition: {x: 0, y: -1.2, z: 2}

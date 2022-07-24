@@ -40,6 +40,17 @@ public class CraftingManager : MonoBehaviour
                 {
                     craftingItemList[i].isCrafting = false;
                 }
+                else if (craftingItemList[i].needBuilding != null)
+                {
+                    if (BuildManager.Instance.isUsableBuilding.TryGetValue(craftingItemList[i].needBuilding, out bool value))
+                    {
+                        craftingItemList[i].isCrafting = value;
+                    }
+                    else
+                    {
+                        craftingItemList[i].isCrafting = false;
+                    }
+                }
             }
 
             if (craftingItemList[i].isCrafting)

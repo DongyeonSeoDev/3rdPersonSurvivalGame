@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Transform player; // 플레이어 위치
+    public static Transform player; // 플레이어 위치
 
     // 싱글톤 패턴
     private static GameManager instance;

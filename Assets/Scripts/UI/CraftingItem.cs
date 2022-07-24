@@ -9,6 +9,7 @@ public class CraftingItem : MonoBehaviour
     public List<int> currentItemCountList = new List<int>();
     public List<Text> needItemTextList = new List<Text>();
     public ItemSO craftingItem;
+    public ItemSO needBuilding;
     public Image buttonImage;
     public bool isCrafting;
 }
