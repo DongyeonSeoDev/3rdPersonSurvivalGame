@@ -40,6 +40,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
+        // 체력, 배고픔, 시간 설정
         currentHp = maxHp;
         currentHunger = maxHunger;
 

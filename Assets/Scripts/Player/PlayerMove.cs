@@ -38,7 +38,8 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         targetMovePosition.y -= gravityScale * Time.deltaTime; // 중력 적용
-        currentMovePosition = Quaternion.Euler(0f, cameraMove.CurrentCameraAngle.y + 180f, 0f) * targetMovePosition * Time.deltaTime; // 카메라 방향 기준에서 목표 방향으로 설정
+        // 카메라 방향 기준에서 목표 방향으로 설정
+        currentMovePosition = Quaternion.Euler(0f, cameraMove.CurrentCameraAngle.y + 180f, 0f) * targetMovePosition * Time.deltaTime;
 
         characterController.Move(currentMovePosition); // 이동
 
@@ -88,10 +89,12 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    // 사용 가능한 오브젝트가 있는지 확인
     private void BuildObjectCheck(BuildObject buildObject, bool isEnter)
     {
         if (buildObject != null)
         {
+            // BuildManager에 사용 가능한 오브젝트에 추가 또는 삭제
             if (!BuildManager.Instance.isUsableBuilding.ContainsKey(buildObject.buildItem))
             {
                 BuildManager.Instance.isUsableBuilding.Add(buildObject.buildItem, isEnter);
@@ -103,6 +106,7 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    // 사용 가능한 오브젝트가 있는지 확인
     private void OnTriggerEnter(Collider other)
     {
         BuildObjectCheck(other.GetComponent<BuildObject>(), true);

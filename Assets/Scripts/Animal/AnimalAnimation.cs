@@ -11,7 +11,7 @@ public enum AnimalAnimationType // 애니메이션 타입
 public class AnimalAnimation : MonoBehaviour
 {
     // 애니메이션 Hash값 Dictionary
-    private Dictionary<AnimalAnimationType, int> hashAnimationDictionary = new Dictionary<AnimalAnimationType, int>();
+    private readonly Dictionary<AnimalAnimationType, int> hashAnimationDictionary = new Dictionary<AnimalAnimationType, int>();
 
     private Animator animator;
 

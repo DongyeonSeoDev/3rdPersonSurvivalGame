@@ -15,7 +15,7 @@ public class ItemUI : MonoBehaviour
 
     public float itemUIAnimationTime; // 아이템 UI 애니메이션 시간
 
-    private ItemUIObject currentItemUIObject;
+    private ItemUIObject currentItemUIObject; // 현재 아이템 UI 오브젝트
 
     private Tween scaleTween; // 크기 조절 트윈
     private Tween positionTween; // 위치 조절 트윈
@@ -63,14 +63,16 @@ public class ItemUI : MonoBehaviour
         }
     }
 
+    // UI 변경
     public void ChangeUI(ItemUIObject uiObject)
     {
         if (uiObject != currentItemUIObject)
         {
-            currentItemUIObject.ActiveFalse();
-            uiObject.ActiveTrue();
+            // 현재 UI와 바꿀 UI가 다르다면
+            currentItemUIObject.ActiveFalse(); // 현재 UI를 끔
+            uiObject.ActiveTrue(); // 바꿀 UI를 켬
 
-            currentItemUIObject = uiObject;
+            currentItemUIObject = uiObject; // 현재 UI에 바뀐 UI를 넣음
         }
     }
 

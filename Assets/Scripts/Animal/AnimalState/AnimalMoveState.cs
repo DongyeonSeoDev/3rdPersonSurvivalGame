@@ -6,14 +6,13 @@ public class AnimalMoveState : IAnimalState // 움직임 State
     public void Start(AnimalStateData animalStateData)
     {
         Vector3 targetPosition;
-        NavMeshHit navMeshHit;
 
         // 랜덤 위치를 가져와서 갈 수 있는 위치면 이동
         for (int i = 0; i < animalStateData.navMeshMaxFindPathCount; i++)
         {
             targetPosition = animalStateData.animalTransform.position + GameManager.Instance.RandomDirection() * Random.Range(animalStateData.minMoveDistance, animalStateData.maxMoveDistance);
 
-            if (NavMesh.SamplePosition(targetPosition, out navMeshHit, animalStateData.navMeshMaxDistance, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(targetPosition, out NavMeshHit navMeshHit, animalStateData.navMeshMaxDistance, NavMesh.AllAreas))
             {
                 animalStateData.navMeshAgent.speed = animalStateData.moveSpeed;
                 animalStateData.animalAnimation.SetAnimalAnimation(AnimalAnimationType.Walk);

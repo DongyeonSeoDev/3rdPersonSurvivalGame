@@ -32,10 +32,12 @@ public class PlayerCollect : MonoBehaviour
     // 마우스 좌클릭으로 실행
     public void OnPlayerBehavior(InputAction.CallbackContext context)
     {
+        // 입력이 들어왔고, 인벤토리가 열려있지 않다면 실행
         if (context.performed && !ItemUI.isInventoryOpen)
         {
-            if (!InventoryManager.Instance.UseMainItem())
+            if (!InventoryManager.Instance.UseMainItem()) // 아이템 사용
             {
+                // 아이템을 사용하지 않았다면 실행
                 SetCheckCollider(true);
             }
         }
@@ -51,7 +53,7 @@ public class PlayerCollect : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isActive) // 아이템을 이미 얻었다면 종료
+        if (isActive) // 이미 실행을 했다면 종료
         {
             return;
         }
@@ -61,26 +63,28 @@ public class PlayerCollect : MonoBehaviour
 
         if (collectableObject != null)
         {
-            // 아이템 획득
             ItemSO item = collectableObject.GetItem();
 
             if (item != null)
             {
+                // 아이템이 null이 아니면 아이템 획득
                 InventoryManager.Instance.AddItem(item);
 
                 SetCheckCollider(false);
             }
         }
 
-        // 공격이 가능한 아이템을 들고있다면
         ItemSO currentItem = InventoryManager.Instance.CurrentItem();
 
+        // 공격이 가능한 아이템을 들고있다면
         if (currentItem != null && currentItem.attackPower > 0)
         {
+            // 동물이 있는지 확인
             Animal animal = other.GetComponent<Animal>();
 
             if (animal != null)
             {
+                // 동물이 있다면 공격
                 animal.GetDamage(currentItem.attackPower);
 
                 SetCheckCollider(false);

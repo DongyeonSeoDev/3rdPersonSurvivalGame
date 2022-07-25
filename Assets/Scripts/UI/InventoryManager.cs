@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour // 인벤토리 Manager
 {
     public Transform[] inventorySlotParents; // 인벤토리 슬롯 부모
     public Transform mainInventorySlotParent; // 메인 인벤토리 슬롯 부모
@@ -12,15 +12,15 @@ public class InventoryManager : MonoBehaviour
     public GameObject useItemButton; // 아이템 사용 버튼
     public GameObject deleteItemButton; // 아이템 삭제 버튼
 
-    [HideInInspector] public InventorySlot moveStartInventorySlot;
-    [HideInInspector] public InventorySlot moveEndInventorySlot;
+    [HideInInspector] public InventorySlot moveStartInventorySlot; // 움직임 시작 슬롯
+    [HideInInspector] public InventorySlot moveEndInventorySlot; // 움직임 종료 슬롯
 
-    private readonly Dictionary<ItemSO, int> itemCountDictionary = new Dictionary<ItemSO, int>();
+    private readonly Dictionary<ItemSO, int> itemCountDictionary = new Dictionary<ItemSO, int>(); // 아이템 개수 Dictionary
     private readonly List<InventorySlot> inventorySlots = new List<InventorySlot>(); // 인벤토리 슬롯 리스트
     private readonly List<InventorySlot> mainInventorySlots = new List<InventorySlot>(); // 메인 인벤토리 슬롯 리스트
 
-    private UnityEvent currentUseItemEvent;
-    private UnityEvent currentMainInventoryUseItemEvent;
+    private UnityEvent currentUseItemEvent; // 아이템 사용 이벤트
+    private UnityEvent currentMainInventoryUseItemEvent; // 메인 인벤토리 아이템 사용 이벤트
     private InventorySlot currentInventorySlot; // 현재 선택된 인벤토리 슬롯
     private InventorySlot currentMainInventorySlot; // 현재 메인 인벤토리에서 선택된 슬롯
 
@@ -45,6 +45,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
+        // 인벤토리 슬롯 추가
         for (int i = 0; i < inventorySlotParents.Length; i++)
         {
             for (int j = 0; j < inventorySlotParents[i].childCount; j++)
@@ -75,28 +76,30 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < inventorySlots.Count; i++)
         {
-            if (!inventorySlots[i].IsItem())
+            if (!inventorySlots[i].IsItem()) // 인벤토리가 비어있는지 확인
             {
-                inventorySlots[i].SetItem(item);
+                inventorySlots[i].SetItem(item); // 아이템 설정
 
-                CurrentMainInventorySlotCheck(inventorySlots[i]);
-                AddItemDictionary(item, 1);
+                CurrentMainInventorySlotCheck(inventorySlots[i]); // 메인 인벤토리인지 확인
+                AddItemDictionary(item, 1); // 아이템 추가
 
                 break;
             }
         }
     }
 
+    // 아이템 사용
     public void UseItem(ItemSO item, int count)
     {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) // 사용한 아이템 개수만큼 실행
         {
             for (int j = 0; j < inventorySlots.Count; j++)
             {
-                if (inventorySlots[j].itemSO == item)
+                if (inventorySlots[j].itemSO == item) // 아이템을 찾았다면
                 {
-                    inventorySlots[j].SetItem(null);
-
+                    // 아이템 제거
+                    inventorySlots[j].SetItem(null); // 아이템 제거
+                    // 메인 인벤토리 확인
                     CurrentMainInventorySlotCheck(inventorySlots[j]);
                     AddItemDictionary(item, -1);
 
@@ -109,7 +112,7 @@ public class InventoryManager : MonoBehaviour
     // 인벤토리 클릭
     public void ClickInventorySlot(InventorySlot inventorySlot)
     {
-        if (inventorySlot != currentInventorySlot)
+        if (inventorySlot != currentInventorySlot) // 이미 선택된 인벤토리인지 확인
         {
             // 선택된 UI 표시
             currentInventorySlot = inventorySlot;
@@ -126,6 +129,7 @@ public class InventoryManager : MonoBehaviour
     // 아이템 사용 버튼을 클릭했을때 실행
     public void UseItemButton()
     {
+        // 아이템 이벤트 실행
         currentUseItemEvent.Invoke();
 
         DeleteItemButton();
@@ -134,19 +138,23 @@ public class InventoryManager : MonoBehaviour
     // 아이템 삭제 버튼을 클릭했을때 실행
     public void DeleteItemButton()
     {
+        // 아이템 제거
         AddItemDictionary(currentInventorySlot.itemSO, -1);
         currentInventorySlot.SetItem(null);
 
-        CurrentMainInventorySlotCheck(currentInventorySlot);
-        RemoveSelectUI();
+        CurrentMainInventorySlotCheck(currentInventorySlot); // 메인 인벤토리 확인
+        RemoveSelectUI(); // 선택 UI 제거
     }
 
+    // 메인 아이템 사용
     public bool UseMainItem()
     {
         if (currentMainInventoryUseItemEvent != null)
         {
+            // 아이템 사용 이벤트 실행
             currentMainInventoryUseItemEvent.Invoke();
 
+            // 이벤트와 아이템 제거
             currentMainInventoryUseItemEvent = null;
             AddItemDictionary(currentMainInventorySlot.itemSO, -1);
             currentMainInventorySlot.SetItem(null);
@@ -155,7 +163,10 @@ public class InventoryManager : MonoBehaviour
         }
         else if (currentMainInventorySlot.itemSO != null && currentMainInventorySlot.itemSO.isBuildable)
         {
+            // 건축 아이템 이면 건축 실행
             BuildManager.Instance.Build();
+
+            // 아이템 제거
             AddItemDictionary(currentMainInventorySlot.itemSO, -1);
             currentMainInventorySlot.SetItem(null);
 
@@ -165,50 +176,56 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    public void MoveItem()
+    public void MoveItem() // 아이템 이동
     {
+        // Start와 End가 Null이 아니고, Start와 End가 같지 않고, Start에 아이템이 있다면 실행
         if (moveStartInventorySlot != null && moveEndInventorySlot != null && moveStartInventorySlot != moveEndInventorySlot && moveStartInventorySlot.itemSO != null)
         {
             ItemSO temp = moveStartInventorySlot.itemSO;
 
+            // Start와 End의 아이템 교환
             moveStartInventorySlot.SetItem(moveEndInventorySlot.itemSO);
             moveEndInventorySlot.SetItem(temp);
 
-            ClickInventorySlot(moveEndInventorySlot);
-            CurrentMainInventorySlotCheck(moveStartInventorySlot);
+            ClickInventorySlot(moveEndInventorySlot); // 인벤토리 슬롯 확인
+
+            // 메인 인벤토리 슬롯 확인
+            CurrentMainInventorySlotCheck(moveStartInventorySlot); 
             CurrentMainInventorySlotCheck(moveEndInventorySlot);
         }
 
-        MoveEnd();
+        MoveEnd(); // 움직임 종료
     }
 
-    public ItemSO CurrentItem()
+    public ItemSO CurrentItem() // 현재 들고있는 아이템
     {
         return currentMainInventorySlot.itemSO;
     }
 
-    public void CloseInventory()
+    public void CloseInventory() // 인벤토리를 닫았을때
     {
-        RemoveSelectUI();
-        MoveEnd();
+        RemoveSelectUI(); // 선택 UI 제거
+        MoveEnd(); // 움직임 종료
     }
 
-    public void AddItemDictionary(ItemSO item, int addCount)
+    public void AddItemDictionary(ItemSO item, int addCount) // 아이템 Dictionary에 추가
     {
         if (!itemCountDictionary.ContainsKey(item))
         {
+            // 키가 없다면 추가
             itemCountDictionary.Add(item, addCount);
 
             return;
         }
 
-        itemCountDictionary[item] += addCount;
+        itemCountDictionary[item] += addCount; // 아이템 개수 설정
     }
 
-    public int GetItemDictionary(ItemSO item)
+    public int GetItemDictionary(ItemSO item) // 아이템 개수 가져오기
     {
         if (!itemCountDictionary.ContainsKey(item))
         {
+            // 키가 없다면 0
             return 0;
         }
 
@@ -217,47 +234,51 @@ public class InventoryManager : MonoBehaviour
 
     private void MoveEnd()
     {
+        // 아이템 이동 종료시 Start와 End 값을 null로 바꿈
         moveStartInventorySlot = null;
         moveEndInventorySlot = null;
     }
 
     private void SetMainInventorySelectUI(int inventorySlotNumber)
     {
+        // 현재 메인 인벤토리 슬롯을 선택한 번호의 인벤토리 슬롯으로 변경
         currentMainInventorySlot = mainInventorySlots[inventorySlotNumber - 1];
 
         mainSelectUI.SetParent(currentMainInventorySlot.transform, false);
 
-        SetMainInventoryEvent();
+        SetMainInventoryEvent(); // 이벤트 설정
     }
 
     private void CurrentMainInventorySlotCheck(InventorySlot inventorySlot)
     {
+        // 메인 인벤토리 슬롯의 아이템이 바뀌었다면 메인 인벤토리 이벤트 변경
         if (inventorySlot.mainInventorySlot != null && currentMainInventorySlot == inventorySlot.mainInventorySlot)
         {
             SetMainInventoryEvent();
         }
     }
 
-    private void SetMainInventoryEvent()
+    private void SetMainInventoryEvent() // 메인 인벤토리 이벤트 설정
     {
-        if (currentMainInventorySlot.itemSO != null)
+        if (currentMainInventorySlot.itemSO != null) // 아이템이 있다면
         {
-            if (currentMainInventorySlot.itemSO.isUsable)
+            if (currentMainInventorySlot.itemSO.isUsable) // 사용가능 아이템
             {
-                BuildManager.Instance.SetBuildObject(null);
-                currentMainInventoryUseItemEvent = currentMainInventorySlot.itemSO.itemUseEvent;
+                BuildManager.Instance.SetBuildObject(null); // 건설 오브젝트를 null로 변경
+                currentMainInventoryUseItemEvent = currentMainInventorySlot.itemSO.itemUseEvent; // 이벤트에 아이템 사용 이벤트를 넣음
 
                 return;
             }
-            else if (currentMainInventorySlot.itemSO.isBuildable)
+            else if (currentMainInventorySlot.itemSO.isBuildable) // 건설가능 아이템
             {
-                BuildManager.Instance.SetBuildObject(currentMainInventorySlot.itemSO);
-                currentMainInventoryUseItemEvent = null;
+                BuildManager.Instance.SetBuildObject(currentMainInventorySlot.itemSO); // 건설 오브젝트에 넣음
+                currentMainInventoryUseItemEvent = null; // 이벤트를 null로 변경
 
                 return;
             }
         }
 
+        // 둘다 null로 변경
         BuildManager.Instance.SetBuildObject(null);
         currentMainInventoryUseItemEvent = null;
     }
@@ -267,11 +288,14 @@ public class InventoryManager : MonoBehaviour
     {
         if (currentInventorySlot.itemSO != null && currentInventorySlot.itemSO.isUsable)
         {
+            // 아이템 사용이 가능하다면 이벤트에 넣음
             currentUseItemEvent = currentInventorySlot.itemSO.itemUseEvent;
         }
 
+        // 부모 설정
         selectUI.SetParent(currentInventorySlot.transform, false);
 
+        // UI와 버튼 활성화
         selectUI.gameObject.SetActive(true);
         useItemButton.SetActive(isUseable);
         deleteItemButton.SetActive(isRemovable);
@@ -280,9 +304,11 @@ public class InventoryManager : MonoBehaviour
     // 선택된 아이템 표시 UI를 지우기
     private void RemoveSelectUI()
     {
+        // 이벤트와 아이템 슬롯 null로 변경
         currentUseItemEvent = null;
         currentInventorySlot = null;
         
+        // UI와 버튼 비활성화
         selectUI.gameObject.SetActive(false);
         useItemButton.SetActive(false);
         deleteItemButton.SetActive(false);

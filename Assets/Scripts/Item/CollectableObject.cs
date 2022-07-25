@@ -8,6 +8,7 @@ public class CollectableObject : MonoBehaviour
 
     public ItemSO GetItem() // 채집
     {
+        // 필요한 아이템이 없거나, 필요한 아이템을 들고 있다면 실행
         if (needItem == null || InventoryManager.Instance.CurrentItem() == needItem)
         {
             gameObject.SetActive(false);

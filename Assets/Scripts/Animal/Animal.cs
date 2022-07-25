@@ -3,8 +3,8 @@ using UnityEngine.AI;
 
 public class Animal : MonoBehaviour
 {
-    public Renderer animalRenderer;
-    public float damageTime = 0f;
+    public Renderer animalRenderer; // 동물 Renderer
+    public float damageTime = 0f; // Damage 이펙트 시간
 
     public float minMoveDelay; // 움직임후 다음 움직임까지 기다리는 최소 시간
     public float maxMoveDelay; // 움직임후 다음 움직임까지 기다리는 최대 시간
@@ -23,13 +23,14 @@ public class Animal : MonoBehaviour
 
     private readonly AnimalStateData stateData = new AnimalStateData(); // State 데이터
 
-    private Material animalMaterial;
+    private Material animalMaterial; // 동물 Material
 
     private int currentHp; // 현재 체력
-    private float currentDamageTime;
+    private float currentDamageTime; // 현재 Damage 이펙트 시간 
 
     private void Start()
     {
+        // Material을 가져옴
         animalMaterial = animalRenderer.material;
 
         // State 데이터 설정
@@ -52,8 +53,10 @@ public class Animal : MonoBehaviour
         stateData.navMeshMaxFindPathCount = navMeshMaxFindPathCount;
         stateData.lootItem = lootItem;
 
-        stateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.Idle)); // 처음에는 Idle로 설정
+        // 처음에는 Idle로 설정
+        stateData.ChangeState(AnimalState.Instance.GetAnimalState(AnimalStateType.Idle));
 
+        // 체력 설정
         currentHp = maxHp;
     }
 
@@ -61,26 +64,27 @@ public class Animal : MonoBehaviour
     {
         stateData.Process(); // State 패턴 실행
 
-        if (currentDamageTime > 0f)
+        if (currentDamageTime > 0f) // 피해를 입었을때 실행
         {
             currentDamageTime -= Time.deltaTime;
 
-            if (currentDamageTime <= 0f)
+            if (currentDamageTime <= 0f) // 피해 이펙트 시간이 끝났다면
             {
-                animalMaterial.SetInt("_ChangeColor", 0);
+                animalMaterial.SetInt("_ChangeColor", 0); // 색깔 원래대로 변경
             }
         }
     }
 
     public void GetDamage(int damage)
     {
-        if (!stateData.isDead && currentDamageTime <= 0f)
+        if (!stateData.isDead && currentDamageTime <= 0f) // 죽지 않았고 Damage 이펙트 효과가 없다면
         {
-            stateData.isDamage = true;
+            stateData.isDamage = true; // State 변경
 
-            animalMaterial.SetInt("_ChangeColor", 1);
-            currentDamageTime = damageTime;
+            animalMaterial.SetInt("_ChangeColor", 1); // 색깔 변경
+            currentDamageTime = damageTime; // 이펙트 실행
 
+            // 체력을 없애고, 죽었는지 확인
             currentHp -= damage;
 
             if (currentHp <= 0)
