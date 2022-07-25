@@ -3,6 +3,9 @@ using UnityEngine.AI;
 
 public class Animal : MonoBehaviour
 {
+    public Renderer animalRenderer;
+    public float damageTime = 0f;
+
     public float minMoveDelay; // 움직임후 다음 움직임까지 기다리는 최소 시간
     public float maxMoveDelay; // 움직임후 다음 움직임까지 기다리는 최대 시간
     public float navMeshMaxDistance; // NavMesh 최대 검색 거리
@@ -20,10 +23,15 @@ public class Animal : MonoBehaviour
 
     private readonly AnimalStateData stateData = new AnimalStateData(); // State 데이터
 
+    private Material animalMaterial;
+
     private int currentHp; // 현재 체력
+    private float currentDamageTime;
 
     private void Start()
     {
+        animalMaterial = animalRenderer.material;
+
         // State 데이터 설정
         stateData.navMeshAgent = GetComponent<NavMeshAgent>();
         stateData.animalAnimation = GetComponent<AnimalAnimation>();
@@ -52,13 +60,26 @@ public class Animal : MonoBehaviour
     private void Update()
     {
         stateData.Process(); // State 패턴 실행
+
+        if (currentDamageTime > 0f)
+        {
+            currentDamageTime -= Time.deltaTime;
+
+            if (currentDamageTime <= 0f)
+            {
+                animalMaterial.SetInt("_ChangeColor", 0);
+            }
+        }
     }
 
     public void GetDamage(int damage)
     {
-        if (!stateData.isDead)
+        if (!stateData.isDead && currentDamageTime <= 0f)
         {
             stateData.isDamage = true;
+
+            animalMaterial.SetInt("_ChangeColor", 1);
+            currentDamageTime = damageTime;
 
             currentHp -= damage;
 

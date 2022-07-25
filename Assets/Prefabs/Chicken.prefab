@@ -142,7 +142,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e41f42f5e81b018479b0091156c9ecc6, type: 2}
+  - {fileID: 2100000, guid: 13681eee365da264e8349b2d48a6e8b2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -747,6 +747,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7055b80e97e6842be4334eb43be894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animalRenderer: {fileID: 7068747200772200728}
+  damageTime: 0.2
   minMoveDelay: 0.5
   maxMoveDelay: 2
   navMeshMaxDistance: 1
